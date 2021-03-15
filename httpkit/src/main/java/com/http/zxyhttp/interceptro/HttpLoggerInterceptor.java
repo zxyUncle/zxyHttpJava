@@ -48,45 +48,18 @@ public class HttpLoggerInterceptor implements Interceptor {
                 requestBody.writeTo(buffer);
                 Charset charset = Charset.forName("UTF-8");
                 MediaType contentType = requestBody.contentType();
-                charset = contentType.charset(Charset.forName("UTF-8"));
-                body = buffer.readString(charset);
+                if (contentType != null) {
+                    charset = contentType.charset(Charset.forName("UTF-8"));
+                    body = buffer.readString(charset);
+                }
                 LogcatUitls.printPost(OkHttpConfig.HTTP_TAG, request.url().toString(), body);
             } else {
                 LogcatUitls.printStirng(OkHttpConfig.HTTP_TAG, request.url().toString());
             }
-            //临近过期刷新token
-            if (false && !request.url().toString().contains("passport/token/action-refresh")) {
-                refreshToken();
-            }
         }
+        Response response = chain.proceed(request);
+
+
         return chain.proceed(request);
-    }
-
-    //临近过期刷新token
-    private void refreshToken() {
-        //组装请求参数
-        Map<String, Object> hashMap = new HashMap<>();
-        hashMap.put("refresh_token", OkHttpConfig.refresh_token);
-        //组装@body
-        RequestBody requestBody = BodyUtils.bodyMap(hashMap);
-        Map<String, Object> reqeustMap = HashMapUtils.instance().reqeustMap();
-        OkHttpApi okHttpApi = OkHttpService.getInstance().apiService(mContext);
-        OkHttpService.getInstance().callBack(okHttpApi.RefreshToken(requestBody, reqeustMap), new NetWorkListener<BaseBean<Object>>() {
-            @Override
-            public void onSucc(BaseBean<Object> bean) {
-                //刷新toke成功-保存
-
-            }
-
-            @Override
-            public void onNetError(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onFail(BaseBean<Object> bean) {
-
-            }
-        });
     }
 }

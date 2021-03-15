@@ -23,6 +23,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.operators.flowable.FlowableOnBackpressureDrop;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -92,7 +94,7 @@ public class OkHttpService {
             httpClickLenerlist.onFail(null);
         } else {
             observable.subscribeOn(Schedulers.io())
-//                    .compose(mContext.bindToLifecycle())
+//                  .compose(mContext.bindToLifecycle())
                     .compose(mContext.bindUntilEvent(ActivityEvent.DESTROY))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(next -> {//请求的next对象
@@ -116,6 +118,7 @@ public class OkHttpService {
                         //加载动画隐藏
 
                     });
+
         }
     }
 
