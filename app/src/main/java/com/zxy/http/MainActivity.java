@@ -22,7 +22,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
     }
     public void onSMS(View view) {
-//        Log.e("zxy",(0/0)+"");
         OkHttpService.getInstance().callBack(okHttpApi.getWXArticle(), new NetWorkListener<BaseBean<ArrayList<ArticleData>>>() {
             @Override
             public void onSucc(BaseBean<ArrayList<ArticleData>> bean) {

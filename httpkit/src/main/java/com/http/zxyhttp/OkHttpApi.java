@@ -21,7 +21,6 @@ import retrofit2.http.POST;
  */
 public interface OkHttpApi {
 
-    //**********************登录**************************************
     /**
      * @return
      */
